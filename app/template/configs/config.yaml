@@ -1,0 +1,74 @@
+app:
+  ID: id
+  Name: Bys.Template.Service
+  Version: v1.0.0
+  Environment: local
+general:
+  SSL: true
+  Mode: debug
+  CSRF: true
+  Debug: true
+  Cert: /data/tls/domain.crt
+  Key: /data/tls/domain.key
+security:
+  CookieName: token
+  JwtSecret: JWT_SECRET
+  JwtTimeout: 65535s
+experiment:
+  EnableTrace: true
+  EnablePprof: false
+  trace:
+    ServiceName: template
+    LocalAgentHostPort: "14268"
+    CollectorEndpoint: http://localhost:14268/api/traces
+    Exporter: jaeger  # stdout | file | jaeger
+    TraceFilePath: /tmp/trace.log
+    Token:
+server:
+  http:
+    addr: 0.0.0.0:18000
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:19000
+    timeout: 1s
+  cron:
+    addr: 127.0.0.1:6379
+    db: 6
+    password: root
+    dial_timeout: 0.5s
+    read_timeout: 0.5s
+    write_timeout: 0.5s
+    MinIdleConn: 200
+    PoolSize: 100
+    PoolTimeout: 240s
+    Concurrency: 10
+  mqtt:
+    addr: tcp://127.0.0.1:1883
+    ClientID: test_mqtt
+    Username: admin
+    Password: public
+    AutoReconnect: true
+    MaxReconnectInterval: 5s
+
+data:
+  database:
+    driver: mysql
+    source: root:root@tcp(127.0.0.1:3306)/test
+    Name: test                     # 数据库名称
+    Addr: 127.0.0.1:3306            # 如果是 docker,可以替换为 对应的服务名称，eg: db:3306
+    UserName: root
+    Password: root
+    ShowLog: true                   # 是否打印所有SQL日志
+    MaxIdleConn: 10                 # 最大闲置的连接数，0意味着使用默认的大小2， 小于0表示不使用连接池
+    MaxOpenConn: 60                 # 最大打开的连接数, 需要小于数据库配置中的max_connections数
+    ConnMaxLifeTime: 14400s            # 单个连接最大存活时间，建议设置比数据库超时时长(wait_timeout)稍小一些
+    SlowThreshold: 0.5s            # 慢查询阈值，设置后只打印慢查询日志，默认为200ms
+
+  redis:
+    network: tcp
+    addr: 127.0.0.1:6379
+    db: 0
+    password: root
+    dial_timeout: 0.2s
+    read_timeout: 0.2s
+    write_timeout: 0.2s

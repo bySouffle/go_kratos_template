@@ -1,0 +1,17 @@
+Development: false
+DisableCaller: false
+DisableStacktrace: false
+Encoding: json   # json or console
+Level: warn      # 日志级别，DEBUG、INFO、WARN、ERROR info,debug,warn,error,fatal
+Name: Template
+Writers: all # file or console
+#LoggerFile: /opt/zzz/testlog/Template.log       # 所有level的日志文件
+#LoggerWarnFile: /opt/testlog/Template.wf.log    # 仅记录warn的日志文件
+#LoggerErrorFile: /opt/testlog/Template.err.log  # 仅记录error的日志文件
+LoggerDir: /tmp/logs/
+LogRollingPolicy: daily   # 日志切割方式: daily/hourly，默认按天(daily)进行切割
+LogRotateDate: 1
+LogRotateSize: 1
+LogBackupCount: 7         # 日志备份数
+
+

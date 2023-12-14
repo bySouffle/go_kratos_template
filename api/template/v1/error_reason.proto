@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package template.v1;
+
+option go_package = "go_kratos_template/api/template/v1;v1";
+option java_multiple_files = true;
+option java_package = "template.v1";
+option objc_class_prefix = "APITemplateV1";
+
+enum ErrorReason {
+  TEMPLATE_UNSPECIFIED = 0;
+  USER_NOT_FOUND = 1;
+}

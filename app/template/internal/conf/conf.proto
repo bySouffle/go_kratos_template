@@ -1,0 +1,173 @@
+syntax = "proto3";
+package kratos.api;
+
+option go_package = "go_kratos_template/app/template/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  APPInfo app = 1;
+  General general = 2;
+  Security security = 3;
+  Experiment experiment = 4;
+  Server server = 5;
+  Data data = 6;
+}
+
+message APPInfo {
+  string ID = 1;
+  string Name = 2;
+  string Version = 3;
+  string Environment = 4;
+}
+
+message General{
+  bool SSL = 1;
+  string Mode = 2;
+  bool  CSRF = 3;
+  bool Debug = 4;
+  string Cert = 5;
+  string Key = 6;
+}
+
+message Security{
+  string CookieName = 1;
+  string JwtSecret = 2;
+  google.protobuf.Duration  JwtTimeout = 3;
+}
+
+message Experiment{
+  message Trace{
+    string ServiceName = 1;
+    string LocalAgentHostPort = 2;
+    string CollectorEndpoint = 3;
+    string Exporter = 4;
+    string TraceFilePath = 5;
+    string Token = 6;
+  }
+  bool EnableTrace = 1;
+  bool EnablePprof = 2;
+  Trace trace = 3;
+}
+
+
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message Cron{
+    string network = 1;
+    string addr = 2;
+    int32 db = 3;
+    string password = 4;
+
+    google.protobuf.Duration dial_timeout = 5;
+    google.protobuf.Duration read_timeout = 6;
+    google.protobuf.Duration write_timeout = 7;
+
+    int32 MinIdleConn = 8;
+    int32 PoolSize = 9;
+    google.protobuf.Duration PoolTimeout = 10;
+    int32 Concurrency = 11;
+  }
+
+  message MQTT{
+    string network = 1;
+    string addr = 2;
+    string ClientID = 3;
+    string Username = 4;
+    string Password = 5;
+
+    bool AutoReconnect = 6;
+    google.protobuf.Duration MaxReconnectInterval = 7;
+
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+  Cron cron = 3;
+  MQTT mqtt = 4;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+    string Name = 3;
+    string Addr = 4;
+    string UserName = 5;
+    string Password = 6;
+    bool ShowLog = 7;
+    int32 MaxIdleConn = 8;
+    int32 MaxOpenConn = 9;
+    google.protobuf.Duration ConnMaxLifeTime = 10;
+    google.protobuf.Duration SlowThreshold = 11;
+
+  }
+  message Redis {
+    string network = 1;
+    string addr = 2;
+    int32 db = 3;
+    string password = 4;
+    google.protobuf.Duration dial_timeout = 5;
+    google.protobuf.Duration read_timeout = 6;
+    google.protobuf.Duration write_timeout = 7;
+  }
+  Database database = 1;
+  Redis redis = 2;
+}
+
+message Registry {
+  message Consul {
+    string address = 1;
+    string scheme = 2;
+    bool health_check = 3;
+  }
+  message EndPoint {
+    string address = 1;
+    string scheme = 2;
+    string discovery = 3;
+  }
+  Consul consul = 1;
+  EndPoint endpoint = 2;
+}
+
+message Logger{
+  bool Development = 1;   //  是否是开发环境，可选值：true 和 false，默认为false
+  bool DisableCaller = 2; //  是否打印日志的文件调用文件和行号，即日志文件里的 caller 字段
+  bool DisableStacktrace = 3;
+  string Encoding = 4;    //  打印的日志格式，默认为 json, 也可以修改为存文本格式，可选值为：json 和 console
+  string Level = 5;       //  配置的日志级别，本地和测试可以开启为 debug，生产环境可以配置为 warn。
+  string Name = 6;        //  服务名，对应到日志里就是 app_id 字段。
+  // 其中 Writers 是日志需要输出到的位置，
+  // 值为 file 或 console，
+  // 选择file会将日志记录到logger_file指定的日志文件中，
+  // 选择console会将日志输出到标准输出，当然也可以两者同时选择。
+  string Writers = 7;
+  string LoggerDir = 8;
+  string LogRollingPolicy = 9;
+  uint32 LogRotateDate = 10;
+  uint32 LogRotateSize = 11;
+  uint32 LogBackupCount = 12;
+}
+
+message Folder {
+  message SavePath{
+    string Image = 1;
+  }
+  SavePath savePath = 1;
+}
+
+message Device{
+  message Default{
+    string OK = 1;
+  }
+  Default default = 1;
+}

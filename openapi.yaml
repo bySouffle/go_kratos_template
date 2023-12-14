@@ -1,0 +1,85 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Template API
+    version: 0.0.1
+paths:
+    /v1/template/create/{name}:
+        get:
+            tags:
+                - Template
+            operationId: Template_CreateTemplate
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.template.v1.CreateTemplateReply'
+    /v1/template/get/{name}:
+        get:
+            tags:
+                - Template
+            operationId: Template_GetTemplate
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.template.v1.GetTemplateReply'
+    /v1/ws/{name}:
+        get:
+            tags:
+                - Template
+            operationId: Template_WSTemplate
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.template.v1.WSTemplateReply'
+components:
+    schemas:
+        api.template.v1.CreateTemplateReply:
+            type: object
+            properties:
+                name:
+                    type: string
+        api.template.v1.GetTemplateReply:
+            type: object
+            properties:
+                name:
+                    type: string
+        api.template.v1.WSTemplateReply:
+            type: object
+            properties:
+                name:
+                    type: string
+tags:
+    - name: Template
