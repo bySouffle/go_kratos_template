@@ -53,7 +53,7 @@ func main() {
 	logger := boot.NewBootLog(c.C).Load().Run()
 	tp := boot.NewBootTrace(c.C).Load().Run()
 	rc := boot.NewRegistry(c.C).Load()
-	app, cleanup, err := wireApp(bt.Param.App, bt.Param.Server, bt.Param.Data, logger, tp, rc, bt.Param.General)
+	app, cleanup, err := wireApp(bt.Param.App, bt.Param.Server, bt.Param.Data, logger, tp, rc, bt.Param.General, bt.Param.Experiment)
 	if err != nil {
 		panic(err)
 	}

@@ -4,28 +4,28 @@
 
 ## 安裝环境
 ### 1. consul
+[管理地址](http://127.0.0.1:8500)
 ```shell
 docker pull hashicorp/consul
 docker run -d --restart=always -p 8500:8500 -e CONSUL_BIND_INTER --name=consul hashicorp/consul agent -server -bootstrap -ui -client='0.0.0.0'
 ```
-### 访问地址
-http://127.0.0.1:8500
+
 
 ### 2. jaeger
+[管理地址](http://127.0.0.1:16686)
+
 ```shell    
 docker pull jaegertracing/all-in-one:latest
 docker run -d --restart=always --name=jaeger -p 6831:6831/udp -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest 
 ```
-### 访问地址
-http://127.0.0.1:16686/
 
 ### 3. EMQX
+[管理地址](http://127.0.0.1:18083)
+
 ```shell   
 docker pull emqx/emqx:5.3.2
 docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8084:8084 -p 8883:8883 -p 18083:18083  emqx:5.3.2
 ```
-### 访问地址
-http://127.0.0.1:16686/
 
 ### 4. 运行
 ```shell
@@ -44,6 +44,11 @@ docker build -t base_image_go:v0.0.1A -f base_image_go.Dockerfile .
 cd ../app/template/cmd/template/
 docker build -t go_kratos_template:v0.0.1 -f Dockerfile .
 docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=go_kratos_template -v /data/conf:/data/conf -v /data/tls:/data/tls -v /etc/localtime:/etc/localtime --network host --privileged  --cap-add=SYS_ADMIN --cap-add=IPC_LOCK  go_kratos_template:v0.0.1
+```
+
+### 6. GRPCS测试
+```shell
+grpcui -insecure=false -plaintext=false  myregistry.domain.com:19000
 ```
 
 ## Install Kratos

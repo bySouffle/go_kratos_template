@@ -2,6 +2,8 @@ package server
 
 import (
 	"crypto/tls"
+	prom "github.com/go-kratos/kratos/contrib/metrics/prometheus/v2"
+	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	template "go_kratos_template/api/template/v1"
 	"go_kratos_template/app/template/internal/conf"
 	"go_kratos_template/app/template/internal/service"
@@ -16,6 +18,10 @@ func NewGRPCServer(c *conf.Server, g *conf.General, templateSrv *service.Templat
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
+			metrics.Server(
+				metrics.WithSeconds(prom.NewHistogram(_metricSeconds)),
+				metrics.WithRequests(prom.NewCounter(_metricRequests)),
+			),
 		),
 	}
 	if c.Grpc.Network != "" {
@@ -33,7 +39,10 @@ func NewGRPCServer(c *conf.Server, g *conf.General, templateSrv *service.Templat
 		if err != nil {
 			panic(err)
 		}
-		tlsConf := &tls.Config{Certificates: []tls.Certificate{cert}}
+		tlsConf := &tls.Config{
+			Certificates:       []tls.Certificate{cert},
+			InsecureSkipVerify: true,
+		}
 		opts = append(opts, grpc.TLSConfig(tlsConf))
 	}
 
