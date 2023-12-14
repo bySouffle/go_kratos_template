@@ -30,6 +30,7 @@ docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8084:8084 -p 8883:8883 -p
 ### 4. 运行
 ```shell
 cd app/template/cmd/template/
+go mod tidy
 go build -ldflags "-X main.Version=x.y.z" .
 ./template -conf ../../configs/
 ```
