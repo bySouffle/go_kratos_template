@@ -16,7 +16,7 @@ security:
   JwtTimeout: 65535s
 experiment:
   EnableTrace: true
-  EnablePprof: false
+  EnablePprof: true
   trace:
     ServiceName: template
     LocalAgentHostPort: "14268"
