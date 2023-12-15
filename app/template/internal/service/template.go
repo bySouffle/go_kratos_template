@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/gogf/gf/v2/util/gconv"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -35,7 +36,7 @@ func (t *TemplateService) CreateTemplate(ctx context.Context, req *pb.CreateTemp
 	return &pb.CreateTemplateReply{Name: template.Name}, nil
 }
 func (t *TemplateService) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplateRequest) (*pb.UpdateTemplateReply, error) {
-	return &pb.UpdateTemplateReply{}, nil
+	return &pb.UpdateTemplateReply{}, errors.New(500, "UpdateTemplate", "failed").WithMetadata(map[string]string{"id": "1"})
 }
 func (t *TemplateService) DeleteTemplate(ctx context.Context, req *pb.DeleteTemplateRequest) (*pb.DeleteTemplateReply, error) {
 	return &pb.DeleteTemplateReply{}, nil
