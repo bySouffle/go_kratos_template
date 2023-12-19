@@ -44,7 +44,6 @@ service Template {
 			get: "/v1/ws/{name}",
 		};
 	};
-
 }
 
 message CreateTemplateRequest {

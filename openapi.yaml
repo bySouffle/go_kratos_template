@@ -3,9 +3,227 @@
 
 openapi: 3.0.3
 info:
-    title: Template API
+    title: ""
     version: 0.0.1
 paths:
+    /v1/auth/check:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_CheckAuth
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.CheckAuthRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.CheckAuthReply'
+    /v1/auth/check/{token}:
+        get:
+            tags:
+                - Auth
+            operationId: Auth_CheckAuth
+            parameters:
+                - name: token
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.CheckAuthReply'
+    /v1/auth/create:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_CreateAuth
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.CreateAuthRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.CreateAuthReply'
+    /v1/auth/create/{name}/{id}:
+        get:
+            tags:
+                - Auth
+            operationId: Auth_CreateAuth
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.CreateAuthReply'
+    /v1/auth/delete:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_GetAuth
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.GetAuthRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.GetAuthReply'
+    /v1/auth/delete/{name}/{id}:
+        get:
+            tags:
+                - Auth
+            operationId: Auth_DeleteAuth
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.DeleteAuthReply'
+    /v1/auth/get/{name}/{id}:
+        get:
+            tags:
+                - Auth
+            operationId: Auth_GetAuth
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.GetAuthReply'
+    /v1/auth/list:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_ListAuth
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.ListAuthRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.ListAuthReply'
+    /v1/auth/update:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_UpdateAuth
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.auth.v1.UpdateAuthRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.UpdateAuthReply'
+    /v1/auth/update/{name}/{id}:
+        get:
+            tags:
+                - Auth
+            operationId: Auth_UpdateAuth
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.auth.v1.UpdateAuthReply'
+    /v1/template/create:
+        post:
+            tags:
+                - Template
+            operationId: Template_CreateTemplate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.template.v1.CreateTemplateRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.template.v1.CreateTemplateReply'
     /v1/template/create/{name}:
         get:
             tags:
@@ -24,6 +242,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.template.v1.CreateTemplateReply'
+    /v1/template/get:
+        post:
+            tags:
+                - Template
+            operationId: Template_GetTemplate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.template.v1.GetTemplateRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.template.v1.GetTemplateReply'
     /v1/template/get/{name}:
         get:
             tags:
@@ -66,7 +302,112 @@ paths:
                                 $ref: '#/components/schemas/api.template.v1.WSTemplateReply'
 components:
     schemas:
+        api.auth.v1.CheckAuthReply:
+            type: object
+            properties:
+                ID:
+                    type: string
+                name:
+                    type: string
+                iss:
+                    type: string
+                iat:
+                    type: string
+                exp:
+                    type: string
+                nbf:
+                    type: string
+                message:
+                    type: string
+        api.auth.v1.CheckAuthRequest:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.auth.v1.CreateAuthReply:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.auth.v1.CreateAuthRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
+        api.auth.v1.DeleteAuthReply:
+            type: object
+            properties:
+                ok:
+                    type: string
+        api.auth.v1.DeleteAuthRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
+        api.auth.v1.GetAuthReply:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.auth.v1.GetAuthRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
+        api.auth.v1.ListAuthReply:
+            type: object
+            properties:
+                name:
+                    type: string
+                token:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.auth.v1.ListAuthReply_Token'
+        api.auth.v1.ListAuthReply_Token:
+            type: object
+            properties:
+                id:
+                    type: string
+                token:
+                    type: string
+        api.auth.v1.ListAuthRequest:
+            type: object
+            properties:
+                user:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.auth.v1.ListAuthRequest_User'
+        api.auth.v1.ListAuthRequest_User:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
+        api.auth.v1.UpdateAuthReply:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.auth.v1.UpdateAuthRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
         api.template.v1.CreateTemplateReply:
+            type: object
+            properties:
+                name:
+                    type: string
+        api.template.v1.CreateTemplateRequest:
             type: object
             properties:
                 name:
@@ -76,10 +417,18 @@ components:
             properties:
                 name:
                     type: string
+        api.template.v1.GetTemplateRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                id:
+                    type: string
         api.template.v1.WSTemplateReply:
             type: object
             properties:
                 name:
                     type: string
 tags:
+    - name: Auth
     - name: Template

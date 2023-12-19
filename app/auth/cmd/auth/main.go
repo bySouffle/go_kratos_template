@@ -2,16 +2,15 @@ package main
 
 import (
 	"github.com/go-kratos/kratos/v2/registry"
-	"go_kratos_template/app/template/internal/boot"
-	"go_kratos_template/app/template/internal/conf"
-	"go_kratos_template/pkg/client"
-	"go_kratos_template/pkg/cronjob"
+	"go_kratos_template/app/auth/internal/boot"
 	"os"
+
+	"go_kratos_template/app/auth/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -27,7 +26,7 @@ var (
 	id, _ = os.Hostname()
 )
 
-func newApp(info *conf.APPInfo, logger log.Logger, gs *grpc.Server, hs *http.Server, cs *cronjob.Server, rs *cronjob.Register, ms *client.Mqtt, cr registry.Registrar) *kratos.App {
+func newApp(info *conf.APPInfo, logger log.Logger, hs *http.Server, cr registry.Registrar) *kratos.App {
 	return kratos.New(
 		kratos.ID(info.ID),
 		kratos.Name(info.Name),
@@ -35,11 +34,7 @@ func newApp(info *conf.APPInfo, logger log.Logger, gs *grpc.Server, hs *http.Ser
 		kratos.Metadata(map[string]string{}),
 		kratos.Logger(logger),
 		kratos.Server(
-			gs,
 			hs,
-			cs,
-			rs,
-			ms,
 		),
 		kratos.Registrar(cr),
 	)

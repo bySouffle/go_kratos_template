@@ -9,6 +9,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	pb "go_kratos_template/api/template/v1"
 	"go_kratos_template/app/template/internal/biz"
+	"go_kratos_template/pkg/middleware/auth"
 )
 
 type TemplateService struct {
@@ -42,6 +43,13 @@ func (t *TemplateService) DeleteTemplate(ctx context.Context, req *pb.DeleteTemp
 	return &pb.DeleteTemplateReply{}, nil
 }
 func (t *TemplateService) GetTemplate(ctx context.Context, req *pb.GetTemplateRequest) (*pb.GetTemplateReply, error) {
+	jwtClaims := ctx.Value("token")
+	parse := &auth.Claims{}
+
+	if err := gconv.Struct(jwtClaims, parse); err != nil {
+		return nil, err
+	}
+
 	msg, err := t.uc.GetWsMsg(ctx, &biz.Template{Name: req.Name, ID: req.Id})
 	if err != nil {
 		return nil, err

@@ -5,6 +5,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+// ProviderSet is server providers.
+var ProviderSet = wire.NewSet(NewHTTPServer, NewRegistrar)
+
 var (
 	// Name is the name of the compiled software.
 	Name = "metrics"
@@ -26,6 +29,3 @@ var (
 		Help:      "The total number of processed requests",
 	}, []string{"kind", "operation", "code", "reason"})
 )
-
-// ProviderSet is server providers.
-var ProviderSet = wire.NewSet(NewGRPCServer, NewHTTPServer, NewCronServer, NewCronRegister, NewMqttClient, NewRegistrar, NewAuthJwt)
