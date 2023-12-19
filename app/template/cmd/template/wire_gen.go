@@ -26,7 +26,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data, logger log.Logger, tracerProvider *trace.TracerProvider, registry *conf.Registry, general *conf.General, experiment *conf.Experiment) (*kratos.App, func(), error) {
+func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data, logger log.Logger, tracerProvider *trace.TracerProvider, registry *conf.Registry, general *conf.General, experiment *conf.Experiment, security *conf.Security) (*kratos.App, func(), error) {
 	dataData, cleanup, err := data.NewData(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -36,7 +36,8 @@ func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data
 	templateUseCase := biz.NewTemplateUseCase(templateRepo, logger, clientManager)
 	templateService := service.NewTemplateService(templateUseCase)
 	grpcServer := server.NewGRPCServer(confServer, general, templateService, logger)
-	httpServer := server.NewHTTPServer(confServer, general, experiment, templateService, logger, tracerProvider)
+	jwt := server.NewAuthJwt(security)
+	httpServer := server.NewHTTPServer(confServer, general, experiment, templateService, logger, tracerProvider, jwt)
 	timerTimer := timer.NewTimer(logger, templateUseCase)
 	cronjobServer := server.NewCronServer(confServer, timerTimer, logger)
 	register := server.NewCronRegister(confServer, logger)

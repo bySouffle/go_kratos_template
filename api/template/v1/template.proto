@@ -8,50 +8,49 @@ option java_package = "api.template.v1";
 import "google/api/annotations.proto";
 
 service Template {
-	rpc CreateTemplate (CreateTemplateRequest) returns (CreateTemplateReply){
-		option (google.api.http) = {
-			// 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
-			get: "/v1/template/create/{name}",
-			// 可以添加附加接口
-			additional_bindings {
-				// 定义一个 POST 接口，并且把 body 映射到 CreateTemplate
-				post: "/v1/template/create",
-				body: "*",
-			}
-		};
-	};
-	rpc UpdateTemplate (UpdateTemplateRequest) returns (UpdateTemplateReply){
-		
-	};
-	rpc DeleteTemplate (DeleteTemplateRequest) returns (DeleteTemplateReply);
-	rpc GetTemplate (GetTemplateRequest) returns (GetTemplateReply){
-		option (google.api.http) = {
-			// 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
-			get: "/v1/template/get/{name}",
-			// 可以添加附加接口
-			additional_bindings {
-				// 定义一个 POST 接口，并且把 body 映射到 CreateTemplate
-				post: "/v1/template/get",
-				body: "*",
-			}
-		};
-	};
-	rpc ListTemplate (ListTemplateRequest) returns (ListTemplateReply);
+  rpc CreateTemplate (CreateTemplateRequest) returns (CreateTemplateReply){
+    option (google.api.http) = {
+      // 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
+      get: "/v1/template/create/{name}",
+      // 可以添加附加接口
+      additional_bindings {
+        // 定义一个 POST 接口，并且把 body 映射到 CreateTemplate
+        post: "/v1/template/create",
+        body: "*",
+      }
+    };
+  };
+  rpc UpdateTemplate (UpdateTemplateRequest) returns (UpdateTemplateReply){
 
-	rpc WSTemplate (WSTemplateRequest) returns (WSTemplateReply){
-		option (google.api.http) = {
-			// 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
-			get: "/v1/ws/{name}",
-		};
-	};
+  };
+  rpc DeleteTemplate (DeleteTemplateRequest) returns (DeleteTemplateReply);
+  rpc GetTemplate (GetTemplateRequest) returns (GetTemplateReply){
+    option (google.api.http) = {
+      // 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
+      get: "/v1/template/get/{name}",
+      // 可以添加附加接口
+      additional_bindings {
+        // 定义一个 POST 接口，并且把 body 映射到 CreateTemplate
+        post: "/v1/template/get",
+        body: "*",
+      }
+    };
+  };
+  rpc ListTemplate (ListTemplateRequest) returns (ListTemplateReply);
 
+  rpc WSTemplate (WSTemplateRequest) returns (WSTemplateReply){
+    option (google.api.http) = {
+      // 定义一个 GET 接口，并且把 name 映射到 CreateTemplate
+      get: "/v1/ws/{name}",
+    };
+  };
 }
 
 message CreateTemplateRequest {
-	string name = 1;
+  string name = 1;
 }
 message CreateTemplateReply {
-	string name = 1;
+  string name = 1;
 }
 
 message UpdateTemplateRequest {}
@@ -61,19 +60,19 @@ message DeleteTemplateRequest {}
 message DeleteTemplateReply {}
 
 message GetTemplateRequest {
-	string name = 1;
-	string id = 2;
+  string name = 1;
+  string id = 2;
 }
 message GetTemplateReply {
-	string name = 1;
+  string name = 1;
 }
 
 message ListTemplateRequest {}
 message ListTemplateReply {}
 
 message WSTemplateRequest {
-	string name = 1;
+  string name = 1;
 }
 message WSTemplateReply {
-	string name = 1;
+  string name = 1;
 }

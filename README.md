@@ -1,17 +1,22 @@
 # Go Kratos Template
+
 ## 简介
+
 本项目对Kratos进行了常用功能集成，包含发现注册服务，链路追踪，定时任务，日志集成，ws等，从而更方便的理解和使用kratos框架。
 
 ## 安裝环境
+
 ### 1. consul
+
 [管理地址](http://127.0.0.1:8500)
+
 ```shell
 docker pull hashicorp/consul
 docker run -d --restart=always -p 8500:8500 -e CONSUL_BIND_INTER --name=consul hashicorp/consul agent -server -bootstrap -ui -client='0.0.0.0'
 ```
 
-
 ### 2. jaeger
+
 [管理地址](http://127.0.0.1:16686)
 
 ```shell    
@@ -20,6 +25,7 @@ docker run -d --restart=always --name=jaeger -p 6831:6831/udp -p 16686:16686 -p 
 ```
 
 ### 3. EMQX
+
 [管理地址](http://127.0.0.1:18083)
 
 ```shell   
@@ -28,6 +34,7 @@ docker run -d --name emqx -p 1883:1883 -p 8083:8083 -p 8084:8084 -p 8883:8883 -p
 ```
 
 ### 4. 运行
+
 ```shell
 cd app/template/cmd/template/
 go mod tidy
@@ -36,6 +43,7 @@ go build -ldflags "-X main.Version=x.y.z" .
 ```
 
 ### 5. docker 运行
+
 ```shell
 # 构建基础镜像
 cd deploy/
@@ -48,15 +56,19 @@ docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=go_kratos_t
 ```
 
 ### 6. GRPCS测试
+
 ```shell
 grpcui -insecure=false -plaintext=false  myregistry.domain.com:19000
 ```
 
 ## Install Kratos
+
 ```
 go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
 ```
+
 ## Create a service
+
 ```
 # Create a template project
 kratos new server
@@ -73,7 +85,9 @@ go generate ./...
 go build -o ./bin/ ./...
 ./bin/server -conf ./configs
 ```
+
 ## Generate other auxiliary files by Makefile
+
 ```
 # Download and update dependencies
 make init
@@ -82,7 +96,9 @@ make api
 # Generate all files
 make all
 ```
+
 ## Automated Initialization (wire)
+
 ```
 # install wire
 go get github.com/google/wire/cmd/wire
@@ -93,6 +109,7 @@ wire
 ```
 
 ## Docker
+
 ```bash
 # build
 docker build -t <your-docker-image-name> .

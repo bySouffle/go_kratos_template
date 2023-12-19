@@ -1,4 +1,3 @@
-
 # 分布式链路追踪
 
 主要是使用 opentracing 协议，基于 jaeger client 来使用
@@ -8,7 +7,6 @@
 ```
 docker run -d --restart=always --name=jaeger -p 6831:6831/udp -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest 
 ```
-
 
 ## 主要使用步骤
 
@@ -105,7 +103,7 @@ func MySecondSpan(ctx context.Context) {
 
 ## 使用demo
 
-### go-redis 
+### go-redis
 
 ```
     span := opentracing.SpanFromContext(c.Request.Context())

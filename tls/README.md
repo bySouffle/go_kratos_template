@@ -1,6 +1,9 @@
 # 生成TLS证书
+
 ## 1. docker方式
+
 https://distribution.github.io/distribution/about/insecure/
+
 ```shell
 # CNu与subjectAltName一致
 openssl req \
@@ -9,6 +12,7 @@ openssl req \
 -addext "subjectAltName = DNS:myregistry.domain.com" \
 -x509 -days 365 -out domain.crt
 ```
+
 ```shell
 Generating a RSA private key
 ...............................................++++
@@ -32,6 +36,7 @@ Email Address []:ss@ss.com
 ```
 
 ## 2. 常用方法
+
 ```shell
 # 生成服务器私钥
 openssl genrsa -out server.key 1024

@@ -17,6 +17,7 @@ import (
 	template "go_kratos_template/api/template/v1"
 	"go_kratos_template/app/template/internal/conf"
 	"go_kratos_template/app/template/internal/service"
+	"go_kratos_template/pkg/middleware/auth"
 	"go_kratos_template/pkg/middleware/httpctx"
 	"go_kratos_template/pkg/middleware/recover"
 	"go_kratos_template/pkg/response"
@@ -35,14 +36,13 @@ func NewWhiteListMatcher() selector.MatchFunc {
 }
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, g *conf.General, experiment *conf.Experiment, templateSrv *service.TemplateService, logger log.Logger, tp *tracesdk.TracerProvider) *http.Server {
+func NewHTTPServer(c *conf.Server, g *conf.General, experiment *conf.Experiment, templateSrv *service.TemplateService, logger log.Logger, tp *tracesdk.TracerProvider, auth *auth.JWT) *http.Server {
 	prometheus.MustRegister(_metricSeconds, _metricRequests)
 
 	var opts = []http.ServerOption{
 		http.ResponseEncoder(response.RespEncoder), //	success resp: 有读取请求头中的traceId的操作
 		http.ErrorEncoder(response.ErrorEncoder),   //	err resp: 有读取请求头中的traceId的操作
 		http.Middleware(
-			//recover.Recovery(),
 			metrics.Server(
 				metrics.WithSeconds(prom.NewHistogram(_metricSeconds)),
 				metrics.WithRequests(prom.NewCounter(_metricRequests)),
@@ -52,6 +52,11 @@ func NewHTTPServer(c *conf.Server, g *conf.General, experiment *conf.Experiment,
 			recover.RecoverMiddleware(),                    //	Notice 自定义的Recover中间件: 优点是可以将错误栈信息加到trace中方便排查问题
 			//logging.Server(logger),	//	请求信息输出
 			httpctx.GetHttpReqContext(),
+			selector.Server(
+				auth.JWTAuth(),
+			).
+				Match(NewWhiteListMatcher()).
+				Build(),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
@@ -113,4 +118,8 @@ func RegisterPprof(s *http.Server) {
 	s.HandleFunc("/debug/heap", pprof.Handler("heap").ServeHTTP)
 	s.HandleFunc("/debug/mutex", pprof.Handler("mutex").ServeHTTP)
 	s.HandleFunc("/debug/threadcreate", pprof.Handler("threadcreate").ServeHTTP)
+}
+
+func NewAuthJwt(security *conf.Security) *auth.JWT {
+	return auth.NewJwt(security.CookieName, security.JwtSecret, security.JwtTimeout.AsDuration())
 }

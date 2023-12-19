@@ -1,10 +1,13 @@
-##  定义接口
+## 定义接口
+
 ### 1. 添加接口
+
 ```shell
 kratos proto add api/template/v1/template.proto
 ```
 
 ### 2. 定义HTTP接口
+
 ```shell
 service Template {
   rpc CreateTemplate (CreateTemplateRequest) returns (CreateTemplateReply){
@@ -21,11 +24,14 @@ service Template {
   };
 }
 ```
+
 ### 3. 定义错误
+
 ```shell
 # 安装
 go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
 ```
+
 ```shell
 syntax = "proto3";
 
@@ -43,9 +49,8 @@ enum ErrorReason {
 
 ```
 
-
-
 ### 2. 生成API
+
 ```shell
 # 1. 生成所有 client API
 make api

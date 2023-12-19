@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package api.auth.v1;
+
+option go_package = "go_kratos_template/api/auth/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.auth.v1";
+import "google/api/annotations.proto";
+
+service Auth {
+  rpc CreateAuth (CreateAuthRequest) returns (CreateAuthReply){
+    option (google.api.http) = {
+      get: "/v1/auth/create/{name}/{id}",
+      additional_bindings {
+        post: "/v1/auth/create",
+        body: "*",
+      }
+    };
+  };
+  rpc UpdateAuth (UpdateAuthRequest) returns (UpdateAuthReply){
+    option (google.api.http) = {
+      get: "/v1/auth/update/{name}/{id}",
+      additional_bindings {
+        post: "/v1/auth/update",
+        body: "*",
+      }
+    };
+  };
+  rpc DeleteAuth (DeleteAuthRequest) returns (DeleteAuthReply){
+    option (google.api.http) = {
+      get: "/v1/auth/delete/{name}/{id}",
+      additional_bindings {
+        post: "/v1/auth/delete",
+        body: "*",
+      }
+    };
+  };
+  rpc GetAuth (GetAuthRequest) returns (GetAuthReply){
+    option (google.api.http) = {
+      get: "/v1/auth/get/{name}/{id}",
+      additional_bindings {
+        post: "/v1/auth/delete",
+        body: "*",
+      }
+    };
+  };
+  rpc ListAuth (ListAuthRequest) returns (ListAuthReply){
+    option (google.api.http) = {
+      post: "/v1/auth/list",
+      body: "*",
+
+    };
+  };
+  rpc CheckAuth (CheckAuthRequest) returns (CheckAuthReply){
+    option (google.api.http) = {
+      get: "/v1/auth/check/{token}",
+      additional_bindings {
+        post: "/v1/auth/check",
+        body: "*",
+      }
+    };
+  };
+}
+
+message CreateAuthRequest {
+  string name = 1;
+  string id = 2;
+}
+message CreateAuthReply {
+  string token = 1;
+}
+
+message UpdateAuthRequest {
+  string name = 1;
+  string id = 2;
+}
+message UpdateAuthReply {
+  string token = 1;
+}
+
+message DeleteAuthRequest {
+  string name = 1;
+  string id = 2;
+}
+message DeleteAuthReply {
+  string ok = 1;
+}
+
+message GetAuthRequest {
+  string name = 1;
+  string id = 2;
+}
+message GetAuthReply {
+  string token = 1;
+}
+
+message ListAuthRequest {
+  message User{
+    string name = 1;
+    string id = 2;
+  }
+  repeated User user = 1;
+}
+message ListAuthReply {
+  string name = 1;
+  message Token{
+    string id = 1;
+    string token = 2;
+  }
+  repeated Token token = 2;
+}
+
+message CheckAuthRequest {
+  string token = 1;
+}
+message CheckAuthReply {
+  string ID = 1;
+  string name = 2;
+  string iss = 3;
+  string iat = 4;
+  string exp = 5;
+  string nbf = 6;
+  string message = 7;
+
+}

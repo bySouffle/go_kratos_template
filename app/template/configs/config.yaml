@@ -4,7 +4,7 @@ app:
   Version: v1.0.0
   Environment: local
 general:
-  SSL: true
+  SSL: false
   Mode: debug
   CSRF: true
   Debug: true
