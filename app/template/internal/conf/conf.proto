@@ -39,11 +39,11 @@ message Security{
 message Experiment{
   message Trace{
     string ServiceName = 1;
-    string LocalAgentHostPort = 2;
+    string HostName = 2;
     string CollectorEndpoint = 3;
     string Exporter = 4;
     string TraceFilePath = 5;
-    string Token = 6;
+    string GrpcToken = 6;
   }
   bool EnableTrace = 1;
   bool EnablePprof = 2;

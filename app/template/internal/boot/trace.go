@@ -3,14 +3,16 @@ package boot
 import (
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/gogf/gf/v2/util/gconv"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/resource"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
 	"go_kratos_template/app/template/internal/conf"
+	otlp "go_kratos_template/pkg/trace/otlptrace"
 	"os"
 )
 
@@ -34,8 +36,8 @@ func (t *Trace) Load() *Trace {
 	return t
 }
 
-func (t *Trace) Run() *tracesdk.TracerProvider {
-	var tp *tracesdk.TracerProvider
+func (t *Trace) Run() *sdktrace.TracerProvider {
+	var tp *sdktrace.TracerProvider
 
 	resourceRet, errRet := t.resource()
 	if errRet != nil {
@@ -43,26 +45,38 @@ func (t *Trace) Run() *tracesdk.TracerProvider {
 		panic(errRet)
 	}
 	if t.Param.Experiment.EnableTrace {
+		//	OTLP
+		if t.Param.Experiment.Trace.Exporter == otlp.OTLPHTTP ||
+			t.Param.Experiment.Trace.Exporter == otlp.OTLPGRPC {
+			c := &otlp.Config{}
+			err := gconv.Structs(t.Param.Experiment.Trace, c)
+			if err != nil {
+				panic("[trace] OTLPGRPC config conv error")
+			}
+			tp, _ := c.InitOpenTelemetry()
+			return tp
+		}
+		//	jeager file stdout
 		exporter, err := t.exporter(t.Param.Experiment.Trace.Exporter) // Notice 配置的 jaeger
 		if err != nil {
 			log.Errorw("trace_exporter_error", err)
 			panic(err)
 		}
-		tp = tracesdk.NewTracerProvider(
-			tracesdk.WithBatcher(exporter),
-			tracesdk.WithResource(resourceRet),
+		tp = sdktrace.NewTracerProvider(
+			sdktrace.WithBatcher(exporter),
+			sdktrace.WithResource(resourceRet),
 		)
 	} else {
-		tp = tracesdk.NewTracerProvider(
-			tracesdk.WithResource(resourceRet),
+		tp = sdktrace.NewTracerProvider(
+			sdktrace.WithResource(resourceRet),
 		)
 	}
 	otel.SetTracerProvider(tp)
 	return tp
 }
 
-func (t *Trace) exporter(types string) (tracesdk.SpanExporter, error) {
-	var exporterRet tracesdk.SpanExporter
+func (t *Trace) exporter(types string) (sdktrace.SpanExporter, error) {
+	var exporterRet sdktrace.SpanExporter
 	var err error
 
 	switch types {
@@ -79,6 +93,7 @@ func (t *Trace) exporter(types string) (tracesdk.SpanExporter, error) {
 			jaeger.WithCollectorEndpoint(
 				jaeger.WithEndpoint(t.Param.Experiment.Trace.CollectorEndpoint),
 			))
+
 	}
 	return exporterRet, err
 }
@@ -88,11 +103,11 @@ func (t *Trace) resource() (*resource.Resource, error) {
 		resource.Default(),
 		resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceName(t.Param.App.Name),                     //实例名称
-			attribute.String("ID", t.Param.App.ID),                    // ID
-			attribute.String("environment", t.Param.App.Environment),  // 相关环境
-			attribute.String("Version", t.Param.App.Version),          //版本
-			attribute.String("token", t.Param.Experiment.Trace.Token), //token
+			semconv.ServiceName(t.Param.App.Name),                         //实例名称
+			attribute.String("ID", t.Param.App.ID),                        // ID
+			attribute.String("environment", t.Param.App.Environment),      // 相关环境
+			attribute.String("Version", t.Param.App.Version),              //版本
+			attribute.String("token", t.Param.Experiment.Trace.GrpcToken), //token
 		),
 	)
 	if err != nil {

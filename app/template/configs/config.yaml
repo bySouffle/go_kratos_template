@@ -19,11 +19,15 @@ experiment:
   EnablePprof: true
   trace:
     ServiceName: template
-    LocalAgentHostPort: "14268"
-    CollectorEndpoint: http://localhost:14268/api/traces
-    Exporter: jaeger  # stdout | file | jaeger
+    HostName: local
+    CollectorEndpoint: http://localhost:4318/v1/traces
+    # jeager http://localhost:14268/api/traces
+    # GPC localhost:4317
+    # HTTP http://localhost:4318/v1/traces
+    Exporter: otlp.http
+    # stdout | file | jaeger | otlp.grpc | otlp.http
     TraceFilePath: /tmp/trace.log
-    Token:
+    GrpcToken: token
 server:
   http:
     addr: 0.0.0.0:18000
