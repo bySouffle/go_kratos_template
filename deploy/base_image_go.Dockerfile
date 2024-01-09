@@ -18,5 +18,6 @@ RUN       apt-get update \
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod a+x /usr/local/bin/docker-entrypoint.sh
 
-#docker build -t base_image_go:v0.0.1A -f base_image_go.Dockerfile .
-#docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=base_image_go -v /opt:/opt -v /etc/localtime:/etc/localtime --network host --privileged  --cap-add=SYS_ADMIN --cap-add=IPC_LOCK  base_image_go:v0.0.1A
+#docker build -t base_image_go:latest -f base_image_go.Dockerfile .
+#docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=base_image_go -v /opt:/opt -v /etc/localtime:/etc/localtime --network host --privileged  --cap-add=SYS_ADMIN --cap-add=IPC_LOCK  base_image_go:latest bash -c "/bin/bash"
+

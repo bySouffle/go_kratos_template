@@ -1,6 +1,6 @@
 app:
   ID: id
-  Name: Bys.Template.Service
+  Name: go.Template.Service
   Version: v1.0.0
   Environment: local
 general:
@@ -30,10 +30,10 @@ experiment:
     GrpcToken: token
 server:
   http:
-    addr: 0.0.0.0:18000
+    addr: 0.0.0.0:18001
     timeout: 1s
   grpc:
-    addr: 0.0.0.0:19000
+    addr: 0.0.0.0:19001
     timeout: 1s
   cron:
     addr: 127.0.0.1:6379

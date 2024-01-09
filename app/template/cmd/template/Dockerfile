@@ -1,4 +1,4 @@
-FROM base_image_go:v0.0.1A AS builder
+FROM base_image_go:latest AS builder
 MAINTAINER bySouffle <bysouffle@gmail.com>
 LABEL authors="bys"
 

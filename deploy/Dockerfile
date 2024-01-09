@@ -1,4 +1,4 @@
-FROM base_image_go:v0.0.1A AS builder
+FROM base_image_go:latest AS builder
 MAINTAINER bySouffle <bysouffle@gmail.com>
 LABEL authors="bys"
 
@@ -16,8 +16,8 @@ VOLUME /data/conf
 CMD ["./go_kratos_template", "-conf", "/data/conf"]
 
 
-#docker build -t go_kratos_template:v0.0.1 -f Dockerfile .
-#docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=go_kratos_template -v /opt:/opt -v /etc/localtime:/etc/localtime --network host --privileged  --cap-add=SYS_ADMIN --cap-add=IPC_LOCK  go_kratos_template:v0.0.1
+#docker build -t go_kratos_template:latest -f Dockerfile .
+#docker run -d --restart=always -e LOCAL_USER_ID=`id -u $USER` --name=go_kratos_template -v /opt:/opt -v /etc/localtime:/etc/localtime --network host --privileged  --cap-add=SYS_ADMIN --cap-add=IPC_LOCK  go_kratos_template:latest
 
 
 
