@@ -28,4 +28,5 @@ var (
 )
 
 // ProviderSet is server providers.
-var ProviderSet = wire.NewSet(NewGRPCServer, NewHTTPServer, NewCronServer, NewCronRegister, NewMqttClient, NewRegistrar, NewAuthJwt)
+// var ProviderSet = wire.NewSet(NewGRPCServer, NewHTTPServer, NewCronServer, NewCronRegister, NewMqttClient, NewRegistrar, NewAuthJwt, )
+var ProviderSet = wire.NewSet(NewGRPCServer, NewHTTPServer, NewCronServer, NewCronManager, NewCronConfigProvider, NewMqttClient, NewRegistrar, NewAuthJwt)

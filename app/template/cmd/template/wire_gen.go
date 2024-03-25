@@ -26,7 +26,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data, logger log.Logger, tracerProvider *trace.TracerProvider, registry *conf.Registry, general *conf.General, experiment *conf.Experiment, security *conf.Security) (*kratos.App, func(), error) {
+func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data, logger log.Logger, tracerProvider *trace.TracerProvider, registry *conf.Registry, general *conf.General, experiment *conf.Experiment, security *conf.Security, cron *conf.Cron) (*kratos.App, func(), error) {
 	dataData, cleanup, err := data.NewData(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -40,10 +40,12 @@ func wireApp(appInfo *conf.APPInfo, confServer *conf.Server, confData *conf.Data
 	httpServer := server.NewHTTPServer(confServer, general, experiment, templateService, logger, tracerProvider, jwt)
 	timerTimer := timer.NewTimer(logger, templateUseCase)
 	cronjobServer := server.NewCronServer(confServer, timerTimer, logger)
-	register := server.NewCronRegister(confServer, logger)
+	client := data.NewRedis(confData)
+	cronConfigProvider := server.NewCronConfigProvider(client, cron)
+	periodicManager := server.NewCronManager(confServer, logger, cronConfigProvider)
 	mqtt := server.NewMqttClient(confServer, logger)
 	registrar := server.NewRegistrar(registry)
-	app := newApp(appInfo, logger, grpcServer, httpServer, cronjobServer, register, mqtt, registrar)
+	app := newApp(appInfo, logger, grpcServer, httpServer, cronjobServer, periodicManager, mqtt, registrar)
 	return app, func() {
 		cleanup()
 	}, nil

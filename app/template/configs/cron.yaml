@@ -1,0 +1,2 @@
+TaskPeriod:
+  timer:power: "@every 30s"

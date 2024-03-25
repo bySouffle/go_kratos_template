@@ -27,7 +27,8 @@ var (
 	id, _ = os.Hostname()
 )
 
-func newApp(info *conf.APPInfo, logger log.Logger, gs *grpc.Server, hs *http.Server, cs *cronjob.Server, rs *cronjob.Register, ms *client.Mqtt, cr registry.Registrar) *kratos.App {
+// PeriodicManager
+func newApp(info *conf.APPInfo, logger log.Logger, gs *grpc.Server, hs *http.Server, cs *cronjob.Server, rs *cronjob.PeriodicManager, ms *client.Mqtt, cr registry.Registrar) *kratos.App {
 	return kratos.New(
 		kratos.ID(info.ID),
 		kratos.Name(info.Name),
@@ -53,7 +54,9 @@ func main() {
 	logger := boot.NewBootLog(c.C).Load().Run()
 	tp := boot.NewBootTrace(c.C).Load().Run()
 	rc := boot.NewRegistry(c.C).Load()
-	app, cleanup, err := wireApp(bt.Param.App, bt.Param.Server, bt.Param.Data, logger, tp, rc, bt.Param.General, bt.Param.Experiment, bt.Param.Security)
+	cronConf := boot.NewCron(c.C).Load()
+
+	app, cleanup, err := wireApp(bt.Param.App, bt.Param.Server, bt.Param.Data, logger, tp, rc, bt.Param.General, bt.Param.Experiment, bt.Param.Security, cronConf)
 	if err != nil {
 		panic(err)
 	}

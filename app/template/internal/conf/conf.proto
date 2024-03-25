@@ -171,3 +171,7 @@ message Device{
   }
   Default default = 1;
 }
+
+message Cron{
+  map<string, string> TaskPeriod = 1;
+}
